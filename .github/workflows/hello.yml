@@ -1,8 +1,11 @@
-name: Run name
-run-name: Run by @${{ github.actor }}
+name: GITHUB_OUTPUT
 on: push
 jobs:
-  print:
+  share:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello"
+      - id: source                                     # ステップIDを設定
+        run: echo "result=Hello" >> "${GITHUB_OUTPUT}" # GITHUB_OUTPUTへ書き出し
+      - env:
+          RESULT: ${{ steps.source.outputs.result }}   # stepsコンテキストから参照
+        run: echo "${RESULT}"
